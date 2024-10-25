@@ -1,0 +1,25 @@
+.snag-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.snag-list.empty {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .snag-list {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+}
+

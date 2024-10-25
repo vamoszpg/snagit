@@ -4,16 +4,24 @@
   --secondary-color: #FF006E;
   --accent-color-1: #8338EC;
   --accent-color-2: #FFBE0B;
-  --background-color: #F8F9FA;
-  --text-color-dark: #212529;
+  --background-color: #F0F4F8; /* Light blue-gray for a soft background */
+  --text-color-dark: #333333; /* Dark gray for better readability */
   --text-color-light: #F8F9FA;
-  --success-color: #28A745;
+  --success-color: #4CAF50; /* Green for success */
   --warning-color: #FFC107;
   --danger-color: #DC3545;
 }
 
-html {
-  scroll-behavior: smooth;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -22,6 +30,35 @@ body {
   background-color: var(--background-color);
   color: var(--text-color-dark);
   font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.App {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 10px;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -68,4 +105,35 @@ h1, h2, h3, h4, h5, h6 {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    padding: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.3em;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  #root {
+    padding: 0;
+  }
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  #root {
+    max-width: 100%;
+  }
 }

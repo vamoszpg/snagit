@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-// import { getSnags, addSnag, deleteSnag } from './mockApi';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -7,9 +7,11 @@ import Reports from './components/Reports';
 import './components/Reports.css';
 import Footer from './components/Footer';
 import BackToTopButton from './components/BackToTopButton';
-import Login from './components/Login';
-import Register from './components/Register';
+import LandingPage from './components/LandingPage';
+import FindOutMore from './components/FindOutMore';
 import config from './config';
+import SnagForm from './components/SnagForm';
+import SnagList from './components/SnagList';
 
 function App() {
   console.log('API URL:', config.API_URL);
@@ -18,19 +20,22 @@ function App() {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [_user, setUser] = useState(null);
-  const [_isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [savedReports, setSavedReports] = useState([]);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
-    // Instead of fetching snags, we'll initialize with an empty array
     setSnags([]);
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleAddSnag = (newSnag) => {
-    setSnags(prevSnags => [...prevSnags, { ...newSnag, id: Date.now() }]);
+    setSnags(prevSnags => [...prevSnags, { ...newSnag, id: Date.now(), date: new Date() }]);
   };
 
   const handleDeleteSnag = (id) => {
@@ -61,69 +66,68 @@ function App() {
     document.body.classList.toggle('dark-mode');
   };
 
-  const handleLogin = (userData) => {
-    setUser(userData);
+  const handleLogin = (email) => {
+    // Here you would typically validate the email or perform an API call
+    // For now, we'll just set isAuthenticated to true
     setIsAuthenticated(true);
-    setShowAuthModal(false);
   };
 
   const handleLogout = () => {
-    setUser(null);
     setIsAuthenticated(false);
-    localStorage.removeItem('token');
+    setActiveTab('dashboard'); // Reset to dashboard when logging out
   };
 
-  const recentSnags = snags.filter(snag => {
-    const snagDate = new Date(snag.date);
-    const now = new Date();
-    const differenceInDays = (now - snagDate) / (1000 * 3600 * 24);
-    return differenceInDays <= 7; // Only show snags from the last 7 days
-  });
-
   return (
-    <div className={`App ${isDarkMode ? 'dark-mode' : ''}`}>
-      {error && <div className="error-message">{error}</div>}
-      <Header 
-        onAddSnag={handleAddSnag}
-        notifications={notifications}
-        clearNotification={clearNotification}
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onLogout={handleLogout}
-      />
-      <main className="main-content">
-        {activeTab === 'dashboard' ? (
-          <Dashboard 
-            snags={snags} 
-            onAddSnag={handleAddSnag}
-            onDeleteSnag={handleDeleteSnag}
-            onSaveReport={handleSaveReport}
-            onClearAllSnags={handleClearAllSnags}
-          />
-        ) : activeTab === 'reports' ? (
-          <Reports 
-            savedReports={savedReports}
-            onDeleteReport={handleDeleteReport}
-          />
-        ) : null}
-      </main>
-      <Footer isDarkMode={isDarkMode} />
-      <BackToTopButton />
-      {showAuthModal && (
-        <div className="auth-modal">
-          {isLogin ? (
-            <Login onLogin={handleLogin} onClose={() => setShowAuthModal(false)} />
-          ) : (
-            <Register onRegister={handleLogin} onClose={() => setShowAuthModal(false)} />
-          )}
-          <button onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? 'Need an account? Register' : 'Already have an account? Login'}
-          </button>
-        </div>
-      )}
-    </div>
+    <Router>
+      <div className={`App ${isDarkMode ? 'dark-mode' : ''} ${isMobile ? 'mobile' : ''}`}>
+        {error && <div className="error-message">{error}</div>}
+        <Routes>
+          <Route path="/" element={
+            isAuthenticated ? 
+              <Navigate to="/dashboard" /> : 
+              <LandingPage onLogin={handleLogin} />
+          } />
+          <Route path="/find-out-more" element={<FindOutMore />} />
+          <Route path="/dashboard" element={
+            isAuthenticated ? (
+              <>
+                <Header 
+                  onAddSnag={handleAddSnag}
+                  notifications={notifications}
+                  clearNotification={clearNotification}
+                  isDarkMode={isDarkMode}
+                  toggleDarkMode={toggleDarkMode}
+                  activeTab={activeTab}
+                  setActiveTab={setActiveTab}
+                  onLogout={handleLogout}
+                  isMobile={isMobile}
+                />
+                <main className="main-content">
+                  {activeTab === 'dashboard' ? (
+                    <Dashboard 
+                      snags={snags} 
+                      onAddSnag={handleAddSnag}
+                      onDeleteSnag={handleDeleteSnag}
+                      onSaveReport={handleSaveReport}
+                      onClearAllSnags={handleClearAllSnags}
+                      isMobile={isMobile}
+                    />
+                  ) : activeTab === 'reports' ? (
+                    <Reports 
+                      savedReports={savedReports}
+                      onDeleteReport={handleDeleteReport}
+                      isMobile={isMobile}
+                    />
+                  ) : null}
+                </main>
+                <Footer isDarkMode={isDarkMode} />
+                <BackToTopButton />
+              </>
+            ) : <Navigate to="/" />
+          } />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

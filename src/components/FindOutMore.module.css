@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.findOutMorePage {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #3A86FF, #1E3A8A);
+  font-family: 'Poppins', sans-serif;
+  padding: 1rem;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.findOutMoreContent {
+  background: #F0F7FF;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.findOutMoreContent:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #3A86FF;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.title span {
+  color: #FFBE0B;
+}
+
+.tagline {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #333333;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.sectionTitle {
+  font-size: 1.8rem;
+  color: #1E3A8A;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #FFBE0B;
+  padding-bottom: 0.5rem;
+}
+
+.contentSection {
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+.featuresList, .benefitsList {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.featuresList li, .benefitsList li {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #333333;
+  display: flex;
+  align-items: center;
+}
+
+.featuresList li i, .benefitsList li i {
+  margin-right: 10px;
+  color: #3A86FF;
+}
+
+.cta {
+  text-align: center;
+}
+
+.ctaButton {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  background: linear-gradient(135deg, #3A86FF, #1E3A8A);
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(58, 134, 255, 0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.ctaButton:hover {
+  background: #1E3A8A;
+  transform: translateY(-2px);
+  animation: none;
+}
+
+@media (max-width: 480px) {
+  .findOutMoreContent {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .tagline {
+    font-size: 1rem;
+  }
+
+  .sectionTitle {
+    font-size: 1.5rem;
+  }
+
+  .contentSection {
+    padding: 1rem;
+  }
+
+  .featuresList li, .benefitsList li {
+    font-size: 0.9rem;
+  }
+
+  .ctaButton {
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+  }
+}
